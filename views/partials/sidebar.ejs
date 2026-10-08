@@ -1,0 +1,63 @@
+<aside class="sidebar">
+	<div class="sidebar-header">
+		<img src="" alt="" />
+		<h3>Sand<span class="logo">Box</span></h3>
+	</div>
+	<p>
+		Logged in:
+		<strong>
+			<%= (typeof user !== 'undefined' && user) ? (user.username || user.email)
+			: 'Admin' %> 
+		</strong>
+	</p>
+	<nav class="sidebar-nav">
+		<a
+			href="/admin/dashboard"
+			class="nav-link <%= typeof activePage !== 'undefined' && activePage === 'dashboard' ? 'active' : '' %>">
+			<span class="material-icons-sharp"> dashboard </span>
+			<h5>Dashboard</h5>
+		</a>
+
+		<a
+			href="/admin/users"
+			class="nav-link <%= typeof activePage !== 'undefined' && activePage === 'users' ? 'active' : '' %>">
+			<span class="material-icons-sharp"> person_outline </span>
+			<h5>Users</h5>
+		</a>
+
+		<a
+			href="/admin/history"
+			class="nav-link <%= typeof activePage !== 'undefined' && activePage === 'history' ? 'active' : '' %>">
+			<span class="material-icons-sharp"> receipt_long </span>
+			<h5>History</h5>
+		</a>
+
+		<a
+			href="/admin/analytics"
+			class="nav-link <%= typeof activePage !== 'undefined' && activePage === 'analytics' ? 'active' : '' %>">
+			<span class="material-icons-sharp"> insights </span>
+			<h5>Analytics</h5>
+		</a>
+
+		<a
+			href="/admin/newLogin"
+			class="nav-link <%= typeof activePage !== 'undefined' && activePage === 'newLogin' ? 'active' : '' %>">
+			<span class="material-icons-sharp"> add </span>
+			<h5>New Login</h5>
+		</a>
+
+		<a
+			href="/admin/settings"
+			class="nav-link <%= typeof activePage !== 'undefined' && activePage === 'settings' ? 'active' : '' %>">
+			<span class="material-icons-sharp"> settings </span>
+			<h5>Settings</h5>
+		</a>
+
+		<form action="/auth/logout" method="POST" style="margin-top: 20px">
+			<button type="submit" class="btn-logout">
+				<span class="material-icons-sharp"> logout </span>
+				<h5>Logout</h5>
+			</button>
+		</form>
+	</nav>
+</aside>

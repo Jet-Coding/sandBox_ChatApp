@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<%- include('../partials/clientHead') %>
+<body class="auth-page">
+    <main class="register-page">
+        <form action="/auth/register" method="POST">
+            <fieldset>
+                <h3>Sand<span class="logo">Box</span></h3>
+                <legend>Create an Account</legend>
+
+                <% if (typeof error !== 'undefined' && error) { %>
+                <div class="alert-danger"><%= error %></div>
+                <% } %>
+
+                <label for="username">Username</label>
+                <input 
+                    type="text" 
+                    id="username" 
+                    name="username" 
+                    placeholder="username" 
+                    required 
+                    autocomplete="off"
+                />
+
+                <label for="email">Email Address</label>
+                <input 
+                    type="email" 
+                    id="email" 
+                    name="email" 
+                    placeholder="your@email.com" 
+                    required 
+                    autocomplete="off"
+                />
+
+                <label for="password">Password</label>
+                <input 
+                    type="password" 
+                    id="password" 
+                    name="password" 
+                    placeholder="password" 
+                    required
+                />
+
+                <button type="submit" class="btn-submit">Register</button>
+                <p>Already have an account?<a href="/auth/login">Login here</a></p>
+            </fieldset>
+        </form>
+    </main>
+</body>
+</html>

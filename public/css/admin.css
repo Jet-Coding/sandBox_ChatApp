@@ -1,0 +1,463 @@
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&display=swap");
+:root {
+	--primary-color: #4f46e5;
+	--color-danger: #ff0060;
+	--bg-main: #0f172a;
+}
+/* Reset and Base Styles */
+* {
+	box-sizing: border-box;
+	margin: 0;
+	padding: 0;
+	font-family:
+		-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial,
+		sans-serif;
+}
+body {
+	background-color: var(--bg-main); /* Dark slate background for admin portal */
+	color: #f8fafc;
+	min-height: 100vh;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+/* Login Card Container */
+.login-container {
+	background-color: #1e293b;
+	padding: 2.5rem;
+	border-radius: 12px;
+	box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.5);
+	width: 100%;
+	max-width: 420px;
+	border: 1px solid #334155;
+}
+.login-container h2 {
+	font-size: 1.75rem;
+	font-weight: 600;
+	margin-bottom: 1.5rem;
+	text-align: center;
+	color: #ffffff;
+}
+/* Error Alert */
+.alert-danger {
+	background-color: #451a03;
+	border: 1px solid #78350f;
+	color: #fcd34d;
+	padding: 0.75rem 1rem;
+	border-radius: 6px;
+	font-size: 0.875rem;
+	margin-bottom: 1.25rem;
+	text-align: center;
+}
+/* Form Groups & Inputs */
+.form-group {
+	margin-bottom: 1.25rem;
+	display: flex;
+	flex-direction: column;
+}
+.form-group label {
+	font-size: 0.875rem;
+	font-weight: 500;
+	margin-bottom: 0.5rem;
+	color: #94a3b8;
+}
+.form-group input {
+	width: 100%;
+	padding: 0.75rem 1rem;
+	background-color: #0f172a;
+	border: 1px solid #334155;
+	border-radius: 6px;
+	color: #ffffff;
+	font-size: 1rem;
+	transition:
+		border-color 0.2s ease,
+		box-shadow 0.2s ease;
+}
+.form-group input:focus {
+	outline: none;
+	border-color: #6366f1;
+	box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.2);
+}
+/* Submit Button */
+.btn-submit {
+	width: 100%;
+	padding: 0.75rem;
+	background-color: #6366f1;
+	color: #ffffff;
+	border: none;
+	border-radius: 6px;
+	font-size: 1rem;
+	font-weight: 600;
+	cursor: pointer;
+	margin-top: 0.5rem;
+	transition: background-color 0.2s ease;
+}
+.btn-submit:hover {
+	background-color: #4f46e5;
+}
+/* Action Links */
+.forgot-password,
+.btn-outline {
+	display: block;
+	text-align: center;
+	margin-top: 1rem;
+	font-size: 0.875rem;
+	color: #94a3b8;
+	text-decoration: none;
+	transition: color 0.2s ease;
+}
+.forgot-password:hover,
+.btn-outline:hover {
+	color: #38bdf8;
+}
+/* Base Sidebar Transition */
+.sidebar-header {
+	display: flex;
+	align-items: center;
+	padding: 0.5rem 0;
+	border-bottom: 1px solid #334155;
+	user-select: none;
+}
+/* FULL COLLAPSED STATE STYLES */
+/* Shrink sidebar width */
+.sidebar.collapsed {
+	width: 80px;
+	padding: 2rem 0.75rem;
+}
+/* Hide brand logo text, user info text, and link titles */
+.sidebar.collapsed .sidebar-header h3,
+.sidebar.collapsed p,
+.sidebar.collapsed .nav-link h5,
+.sidebar.collapsed .btn-logout h5 {
+	display: none;
+}
+/* Center header toggle button and nav links when collapsed */
+.sidebar.collapsed .sidebar-header {
+	justify-content: center;
+}
+.sidebar.collapsed .nav-link,
+.sidebar.collapsed .btn-logout {
+	justify-content: center;
+	padding: 0.75rem 0;
+}
+/* Swap chevron icons */
+.sidebar.collapsed #sidebar-toggle .icon-left {
+	display: none;
+}
+.sidebar.collapsed #sidebar-toggle .icon-right {
+	display: inline-block;
+}
+/* Sidebar (Full Height) */
+.sidebar {
+	width: 240px;
+	height: 100vh;
+	position: sticky;
+	top: 0;
+	background-color: #1e293b;
+	border-right: 1px solid #334155;
+	padding: 2rem 1.5rem;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between; /* Keeps logout button anchored at bottom */
+	flex-shrink: 0;
+	transition: all 0.3s ease;
+}
+.sidebar h3 {
+	color: #ffffff;
+	font-size: 1.25rem;
+	font-weight: 700;
+	margin-bottom: 0.25rem;
+}
+.logo {
+	color: var(--primary-color,);
+}
+.sidebar p {
+	color: #94a3b8;
+	font-size: 0.875rem;
+	margin-bottom: 1.5rem;
+}
+.sidebar-nav {
+	display: flex;
+	flex-direction: column;
+	gap: 0.5rem;
+	flex-grow: 1; /* Allows nav area to expand while keeping logout at the bottom */
+}
+/* Base Link Styling */
+.sidebar-nav a.nav-link {
+	display: flex;
+	align-items: center;
+	color: #cbd5e1;
+	text-decoration: none;
+	gap: 0.75rem;
+	padding: 0.75rem 1rem;
+	border-radius: 8px;
+	font-size: 0.95rem;
+	transition:
+		background-color 0.2s ease,
+		color 0.2s ease;
+}
+.sidebar-nav a.nav-link h5 {
+	margin: 0;
+	font-size: 0.95rem;
+	font-weight: 500;
+}
+.sidebar-nav a.nav-link span {
+	font-size: 1.4rem;
+	transition: transform 0.2s ease;
+}
+/* Hover State */
+.sidebar-nav a.nav-link:hover {
+	background-color: #334155;
+	color: #ffffff;
+}
+/* Active Focus State */
+.sidebar-nav a.nav-link.active {
+	background-color: #4f46e5; /* Primary Accent Color */
+	color: #ffffff;
+	font-weight: 600;
+	box-shadow: 0 4px 12px rgba(79, 70, 229, 0.3);
+}
+.sidebar-nav a.nav-link.active h5 {
+	font-weight: 600;
+}
+/* Logout Button Form Adjustment */
+.sidebar-nav form {
+	margin-top: auto; /* Pushes logout cleanly to the bottom */
+}
+.btn-logout {
+	width: 100%;
+	display: flex;
+	align-items: center;
+	gap: 0.75rem;
+	padding: 0.75rem 1rem;
+	background: transparent;
+	border: none;
+	color: #f87171;
+	border-radius: 8px;
+	cursor: pointer;
+	transition: background-color 0.2s ease;
+}
+.btn-logout:hover {
+	background-color: rgba(239, 68, 68, 0.1);
+}
+.btn-logout h5 {
+	margin: 0;
+	font-size: 0.95rem;
+}
+/* Master Layout (Fits 100% Viewport Height) */
+.admin-container,
+.users-container {
+	display: flex;
+	width: 100vw;
+	height: 100vh;
+	overflow: hidden;
+}
+/* Main Dashboard Content Area (Independent Scrollbar) */
+.admin-content,
+.users-content {
+	flex: 1;
+	height: 100vh;
+	padding: 1rem;
+	border: 1px solid #334155;
+	overflow-y: auto; /* Internal scrolling if content exceeds height */
+	display: flex;
+	flex-direction: column;
+	gap: 1rem;
+}
+/* Sidebar Toggle Button Container */
+#sidebar-toggle {
+	position: relative; /* Required for overlapping absolute icons */
+	background-color: #334155;
+	border: 1px solid #475569;
+	color: #cbd5e1;
+	width: 36px;
+	height: 36px;
+	margin-right: 16px;
+	border-radius: 8px;
+	cursor: pointer;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+	outline: none;
+	overflow: hidden;
+}
+#sidebar-toggle:hover {
+	background-color: #4f46e5;
+	color: #ffffff;
+	border-color: #6366f1;
+	box-shadow: 0 4px 12px rgba(79, 70, 229, 0.3);
+}
+/* Base style for both animated icons */
+#sidebar-toggle .material-icons-sharp {
+	position: absolute;
+	font-size: 1.35rem; /* FIXED: Fits cleanly inside 36px button without clipping */
+	line-height: 1;
+	transition:
+		transform 0.35s cubic-bezier(0.4, 0, 0.2, 1),
+		opacity 0.3s ease;
+}
+/* Header Section */
+.dashboard-header h1 {
+	font-size: 1.857rem;
+	font-weight: 700;
+	color: #ffffff;
+	margin: 0;
+}
+.dashboard-header p {
+	color: #94a3b8;
+	margin-top: 0.25rem;
+	margin-bottom: 0;
+}
+/* Responsive Metric Stat Cards Grid */
+.dashboard-top-section {
+	display: grid;
+	grid-template-columns: 1fr 340px; /* Stats grid takes remaining space, chart takes 340px */
+	gap: 1rem;
+	align-items: stretch;
+	width: 100%;
+}
+.dashboard-top-section .stats-grid {
+	display: flex;
+	flex-direction: column;
+	gap: 1rem;
+	justify-content: space-between;
+}
+.stat-card {
+	background-color: #1e293b;
+	border: 1px solid #334155;
+	border-radius: 10px;
+	padding: 1rem;
+	box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+}
+.stat-card h3 {
+	font-size: 0.8rem;
+	color: #94a3b8;
+	text-transform: uppercase;
+	letter-spacing: 0.05em;
+	margin-bottom: 0.5rem;
+}
+.stat-number {
+	font-size: 1.875rem;
+	font-weight: 700;
+	color: #ffffff;
+}
+.status-active {
+	color: #22c55e;
+}
+/* Pie Chart Card Styling */
+.chart-card {
+	background-color: #1e293b;
+	border: 1px solid #334155;
+	border-radius: 10px;
+	padding: 1rem;
+	box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+}
+.chart-card h3 {
+	font-size: 0.8rem;
+	color: #94a3b8;
+	text-transform: uppercase;
+	letter-spacing: 0.05em;
+	margin-bottom: 0.75rem;
+	width: 100%;
+	text-align: left;
+}
+.chart-wrapper {
+	position: relative;
+	width: 100%;
+	height: 90%	;
+}
+/* Data Table Container */
+.data-section {
+	background-color: #1e293b;
+	border: 1px solid #334155;
+	border-radius: 10px;
+	padding: 1rem;
+	width: 100%;
+	box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+}
+.data-section h2 {
+	font-size: 1.25rem;
+	color: #ffffff;
+	margin-bottom: 1rem;
+}
+/* Responsive Data Table */
+.admin-table {
+	width: 100%;
+	border-collapse: collapse;
+	text-align: left;
+}
+.admin-table th,
+.admin-table td {
+	padding: 0.875rem 1rem;
+	border-bottom: 1px solid #334155;
+	font-size: 0.875rem;
+}
+.admin-table th {
+	background-color: #0f172a;
+	color: #94a3b8;
+	font-weight: 600;
+	text-transform: uppercase;
+	font-size: 0.75rem;
+	letter-spacing: 0.05em;
+}
+.admin-table tbody tr:hover {
+	background-color: #2b394e;
+}
+/* Role Badges */
+.role-badge {
+	display: inline-block;
+	padding: 0.2rem 0.5rem;
+	border-radius: 9999px;
+	font-size: 0.75rem;
+	font-weight: 600;
+	text-transform: capitalize;
+}
+.role-admin {
+	background-color: rgba(99, 102, 241, 0.2);
+	color: #818cf8;
+	border: 1px solid rgba(99, 102, 241, 0.4);
+}
+.role-user {
+	background-color: rgba(148, 163, 184, 0.2);
+	color: #cbd5e1;
+	border: 1px solid rgba(148, 163, 184, 0.4);
+}
+/* Responsive Mobile Breakpoint */
+@media (max-width: 768px) {
+	.sidebar {
+		position: fixed;
+		left: -260px; /* Hide off-screen by default */
+		z-index: 1000;
+		height: 100vh;
+		box-shadow: 4px 0 15px rgba(0, 0, 0, 0.3);
+	}
+	html,
+	body {
+		overflow: auto; /* Re-enable page scrolling on mobile devices */
+	}
+	.admin-container,
+	.users-container {
+		flex-direction: column;
+		height: auto;
+		overflow: visible;
+	}
+	.sidebar {
+		width: 100%;
+		height: auto;
+		border-right: none;
+		border-bottom: 1px solid #334155;
+	}
+	.admin-content,
+	.users-content {
+		height: auto;
+		padding: 1.25rem;
+		overflow: visible;
+	}
+	.data-section {
+		overflow-x: auto; /* Table horizontal scrolling for smaller screens */
+	}
+}

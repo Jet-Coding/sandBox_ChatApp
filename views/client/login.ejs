@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<%- include('../partials/clientHead') %>
+<body class="auth-page">
+    <main class="login-page">
+        <form action="/auth/login" method="POST">
+            <fieldset>
+                <h3>Sand<span class="logo">Box</span></h3>
+                <legend>Login</legend>
+
+                <% if (typeof error !== 'undefined' && error) { %>
+                    <div class="alert-danger"><%= error %></div>
+                <% } %>
+
+                <label for="identifier">Email Address or Username</label>
+                <input 
+                    type="text" 
+                    id="identifier" 
+                    name="identifier" 
+                    placeholder="username/your@email.com" 
+                    required 
+                    autocomplete="username"
+                />
+
+                <label for="password">Password</label>
+                <input 
+                    type="password" 
+                    id="password" 
+                    name="password" 
+                    placeholder="password" 
+                    required
+                />
+
+                <button type="submit" class="btn-submit">Sign In</button>
+                <p style="margin-top: 15px;">Don't have an account? <a href="/auth/register">Register here</a></p>
+            </fieldset>
+        </form>
+    </main>
+</body>
+</html>

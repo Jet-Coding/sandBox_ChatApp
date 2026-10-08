@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<%- include('../partials/adminHead') %>
+<body>
+    <div class="admin-container"> 
+        <%- include('../partials/sidebar') %>
+
+        <main class="admin-content">
+            <div class="sidebar-header">
+                <button id="sidebar-toggle" aria-label="Toggle Sidebar">
+                    <span class="material-icons-sharp">menu</span>
+                </button>
+                <header class="dashboard-header">
+                    <h1>Admin Dashboard</h1>
+                    <p>Welcome back, <%= (typeof user !== 'undefined' && user && user.username) ? user.username : 'Admin' %></p>
+                </header>
+            </div>
+
+            <!-- Top Dashboard Split: Stat Cards (Left) & Pie Chart (Right) -->
+            <section class="dashboard-top-section">
+                <!-- Stat Metric Cards Column -->
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <p class="stat-number status-active">Online</p>
+                        <h3>System Status</h3>
+                    </div>
+                    <div class="stat-card">
+                        <p class="stat-number"><%= typeof stats !== 'undefined' ? stats.totalAdmins : 0 %></p>
+                        <h3>Total Admins</h3>
+                    </div>
+                    <div class="stat-card">
+                        <p class="stat-number"><%= typeof stats !== 'undefined' ? stats.totalUsers : 0 %></p>
+                        <h3>Total Users</h3>
+                    </div>
+                </div>
+
+                <!-- Statistics Pie Chart Card -->
+                <div class="chart-card">
+                    <h3>Account Ratio</h3>
+                    <div class="chart-wrapper">
+                        <canvas id="userStatsChart"></canvas>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Admin Database Management Table -->
+            <section class="data-section">
+                <h2>Admin accounts</h2>
+                <table class="admin-table">
+                    <thead> 
+                        <tr>
+                            <th>ID</th>
+                            <th>Username</th>
+                            <th>Email</th>
+                            <th>Role</th>
+                            <th>Created At</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <% if (typeof adminList !== 'undefined' && adminList.length > 0) { %>
+                            <% adminList.forEach(admin => { %>
+                                <tr>
+                                    <td><%= admin.id %></td>
+                                    <td><%= admin.username %></td>
+                                    <td><%= admin.email %></td>
+                                    <td><span class="role-badge role-<%= admin.role %>"><%= admin.role %></span></td>
+                                    <td><%= admin.created_at %></td>
+                                </tr>
+                            <% }); %>
+                        <% } else { %>
+                            <tr>
+                                <td colspan="5" style="text-align: center;">No registered users found.</td>
+                            </tr>
+                        <% } %>
+                    </tbody>
+                </table>
+            </section>
+        </main>
+    </div>
+    <!-- Chart.js CDN Library -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        // Extract server-rendered statistics directly from EJS
+        const totalAdmins = <%= (typeof stats !== 'undefined' && stats.totalAdmins) ? stats.totalAdmins : 0 %>;
+        const totalUsers = <%= (typeof stats !== 'undefined' && stats.totalUsers) ? stats.totalUsers : 0 %>;
+
+        // Initialize Chart.js Pie Chart
+        const ctx = document.getElementById('userStatsChart').getContext('2d');
+        new Chart(ctx, {
+            type: 'pie',
+            data: {
+                labels: ['Admins', 'Users'],
+                datasets: [{
+                    data: [totalAdmins, totalUsers],
+                    backgroundColor: [
+                        '#818cf8', // Indigo / Admin Role Theme
+                        '#38bdf8'  // Light Blue / User Role Theme
+                    ],
+                    borderColor: '#1e293b',
+                    borderWidth: 2
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        position: 'bottom',
+                        labels: {
+                            color: '#94a3b8',
+                            font: {
+                                family: 'Poppins',
+                                size: 12
+                            }
+                        }
+                    }
+                }
+            }
+        });
+    </script>
+    <script src="/js/admin.js"></script>
+</body>
+</html>

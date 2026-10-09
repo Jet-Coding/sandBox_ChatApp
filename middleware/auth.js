@@ -4,8 +4,10 @@ const JWT_SECRET = process.env.JWT_SECRET || "fallback-secret-key";
 
 // Single, unified middleware to secure all chat and admin routes
 const verifyToken = (req, res, next) => {
-    const token = req.cookies?.token;
     const isAdminRoute = req.originalUrl.startsWith("/admin");
+
+    const token = isAdminRoute ? req.cookies?.admin_token : req.cookies?.client_token;
+    const cookieName = isAdminRoute ? "admin_token" : "client_token";
     const loginRedirect = isAdminRoute ? "/auth/login-admin" : "/auth/login";
 
     // 1. Force redirect if no authentication cookie exists
@@ -19,17 +21,17 @@ const verifyToken = (req, res, next) => {
 
         // 3. Query the appropriate table based on the decoded token's role
         let dbUser = null;
-        if (decoded.role === "admin") {
+        if (isAdminRoute && decoded.role === "admin") {
             const adminStmt = db.prepare("SELECT id, username, email, role FROM admin WHERE id = ?");
             dbUser = adminStmt.get(decoded.id);
-        } else {
+        } else if (!isAdminRoute) {
             const userStmt = db.prepare("SELECT id, username, email, role FROM users WHERE id = ?");
             dbUser = userStmt.get(decoded.id);
         }
 
         // 4. Reject access if account does not exist in SQLite database
         if (!dbUser) {
-            res.clearCookie("token");
+            res.clearCookie("cookieName");
             return res.redirect(loginRedirect);
         }
 
@@ -39,7 +41,7 @@ const verifyToken = (req, res, next) => {
         next();
     } catch (err) {
         // Clear invalid/expired tokens and redirect to appropriate login page
-        res.clearCookie("token");
+        res.clearCookie("cookieName");
         return res.redirect(loginRedirect);
     }
 };

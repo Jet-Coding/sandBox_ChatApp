@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<%- include('../partials/adminHead') %>
+<body>
+    <div class="users-container">
+        <%- include('../partials/sidebar') %>
+
+        <main class="users-content">
+            <div class="sidebar-header">
+                <button id="sidebar-toggle" aria-label="Toggle Sidebar">
+                    <span class="material-icons-sharp">menu</span>
+                </button>
+                <header class="dashboard-header">
+                    <h1>Settings</h1>
+                    <p>Welcome back, <%= (typeof user !== 'undefined' && user && user.username) ? user.username : 'Users' %></p>
+                </header>                
+            </div>
+    
+        </main>
+    </div>
+    <script src="/js/admin.js"></script>
+</body>
+</html>

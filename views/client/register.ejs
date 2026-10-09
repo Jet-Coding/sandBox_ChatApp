@@ -3,15 +3,14 @@
 <%- include('../partials/clientHead') %>
 <body class="auth-page">
     <main class="register-page">
+        <h3>Sand<span class="logo">Box</span></h3>
+        <h2>Create an Account</h2>
+
+        <% if (typeof error !== 'undefined' && error) { %>
+        <div class="alert-danger"><%= error %></div>
+        <% } %>
         <form action="/auth/register" method="POST">
-            <fieldset>
-                <h3>Sand<span class="logo">Box</span></h3>
-                <legend>Create an Account</legend>
-
-                <% if (typeof error !== 'undefined' && error) { %>
-                <div class="alert-danger"><%= error %></div>
-                <% } %>
-
+            <div class="form-group">
                 <label for="username">Username</label>
                 <input 
                     type="text" 
@@ -21,7 +20,8 @@
                     required 
                     autocomplete="off"
                 />
-
+            </div>
+            <div class="form-group">
                 <label for="email">Email Address</label>
                 <input 
                     type="email" 
@@ -31,7 +31,8 @@
                     required 
                     autocomplete="off"
                 />
-
+            </div>
+            <div class="form-group">
                 <label for="password">Password</label>
                 <input 
                     type="password" 
@@ -40,10 +41,9 @@
                     placeholder="password" 
                     required
                 />
-
-                <button type="submit" class="btn-submit">Register</button>
-                <p>Already have an account?<a href="/auth/login">Login here</a></p>
-            </fieldset>
+            </div>
+            <button type="submit" class="btn-submit">Register</button>
+            <p style="margin-top: 15px;">Already have an account? <a href="/auth/login">Login here</a></p>
         </form>
     </main>
 </body>

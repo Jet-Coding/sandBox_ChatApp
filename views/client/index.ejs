@@ -3,7 +3,7 @@
 	<%- include('../partials/clientHead') %>
 	<body>
 		<div class="chat-app">
-			<!-- Left Navigation / Conversation List -->
+			<!-- Left Navigation / Conversation & Discovery Sidebar -->
 			<aside class="left-sidebar">
 				<div class="left-sidebar-header">
 					<div class="user-profile">
@@ -27,90 +27,114 @@
 
 				<div class="left-search-bar">
 					<i class="fa-solid fa-magnifying-glass"></i>
-					<input type="text" placeholder="Search conversations..." />
+					<input type="text" id="user-search-input" placeholder="Search accounts..." />
 				</div>
 
-				<!-- Navigation List (FIXED HTML STRUCTURE) -->
-				<nav class="chat-list">
-					<% if (typeof usersList !== 'undefined' && usersList.length > 0) { %>
-						<% usersList.forEach((user, index) => { %>
-							<div class="chat-item <%= index === 0 ? 'active' : '' %>" data-user-id="<%= user.id %>" data-username="<%= user.username %>">
+				<!-- Section 1: Followed Contacts (My Chat List) -->
+				<div class="sidebar-section-title" style="padding: 10px 15px; font-weight: bold; color: #888; font-size: 0.85rem;">
+					MY CONTACTS
+				</div>
+				<nav class="chat-list" id="followed-contacts-list">
+					<% if (typeof contacts !== 'undefined' && contacts.length > 0) { %>
+						<% contacts.forEach((contact, index) => { %>
+							<div class="chat-item <%= index === 0 ? 'active' : '' %>" data-user-id="<%= contact.id %>" data-username="<%= contact.username %>">
 								<img
 									src="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?q=80&w=200&auto=format&fit=crop"
-									alt="<%= user.username %>'s Avatar"
+									alt="<%= contact.username %>'s Avatar"
 									class="avatar" />
 								<div class="chat-info">
 									<div class="chat-top">
-										<span class="name"><%= user.username %></span>
+										<span class="name"><%= contact.username %></span>
 										<span class="time">Active</span>
 									</div>
-									<p class="preview"><%= user.email %></p>
+									<p class="preview"><%= contact.email %></p>
 								</div>
 							</div>
 						<% }); %>
 					<% } else { %>
-						<div class="chat-item-empty" style="padding: 15px; text-align: center; color: #888;">
-							<p>No other users found.</p>
+						<div class="chat-item-empty" style="padding: 12px 15px; text-align: center; color: #888; font-size: 0.9rem;">
+							<p>No contacts yet. Follow users below to add them!</p>
 						</div>
 					<% } %>
 				</nav>
+
+				<!-- Section 2: Discover & Follow Accounts -->
+				<div class="sidebar-section-title" style="padding: 10px 15px; font-weight: bold; color: #888; font-size: 0.85rem; border-top: 1px solid #eee; margin-top: 10px;">
+					DISCOVER USERS
+				</div>
+				<div class="discover-list" id="discover-users-list" style="max-height: 200px; overflow-y: auto;">
+					<% if (typeof discoverUsers !== 'undefined' && discoverUsers.length > 0) { %>
+						<% discoverUsers.forEach((discUser) => { %>
+							<div class="discover-item" style="display: flex; align-items: center; justify-content: space-between; padding: 8px 15px;" data-user-id="<%= discUser.id %>">
+								<div style="display: flex; align-items: center; gap: 10px;">
+									<img
+										src="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?q=80&w=200&auto=format&fit=crop"
+										alt="<%= discUser.username %>'s Avatar"
+										class="avatar" style="width: 32px; height: 32px; border-radius: 50%;" />
+									<div>
+										<span style="font-weight: 600; font-size: 0.9rem; display: block;"><%= discUser.username %></span>
+									</div>
+								</div>
+								<button class="btn-follow" data-user-id="<%= discUser.id %>" onclick="followUser('<%= discUser.id %>')" style="padding: 4px 12px; background: #007bff; color: white; border: none; border-radius: 4px; cursor: pointer; font-size: 0.8rem;">
+									<i class="fa-solid fa-user-plus"></i> Follow
+								</button>
+							</div>
+						<% }); %>
+					<% } else { %>
+						<div style="padding: 10px 15px; text-align: center; color: #888; font-size: 0.85rem;">
+							<p>No new users to follow.</p>
+						</div>
+					<% } %>
+				</div>
 			</aside>
 
 			<!-- Center Active Chat Workspace -->
 			<main class="chat-main">
+				<% const activeUser = (typeof contacts !== 'undefined' && contacts.length > 0) ? contacts[0] : null; %>
+
 				<header class="chat-header">
-					<% if (typeof usersList !== 'undefined' && usersList.length > 0) { %>
-						<% usersList.forEach((user, index) => { %>
-						<div class="active-user <%= index === 0 ? 'active' : ''  %>" data-user-id="<%= user.id %>" data-username="<%= user.username %>">
-							<img
-								src="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?q=80&w=200&auto=format&fit=crop"
-								alt="<%= user.username %>'s Avatar"
-								class="avatar" />
-							<div>
-								<h3 class="name"><%= user.username %></h3>
-								<span class="subtext">Active now</span>
-							</div>
+					<div class="active-user" id="active-user-header" data-user-id="<%= activeUser ? activeUser.id : '' %>">
+						<img
+							src="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?q=80&w=200&auto=format&fit=crop"
+							alt="Avatar"
+							class="avatar" />
+						<div>
+							<h3 class="name" id="active-username"><%= activeUser ? activeUser.username : 'Select a Contact' %></h3>
+							<span class="subtext"><%= activeUser ? 'Active now' : 'Follow accounts to start chatting' %></span>
 						</div>
-						<div class="header-actions">
-							<button class="btn-icons" title="Start Call">
-								<i class="fa-solid fa-phone"></i>
-							</button>
-							<button class="btn-icons" title="Video Call">
-								<i class="fa-solid fa-video"></i>
-							</button>
-							<button class="btn-icons" id="toggle-info" title="Toggle Info">
-								<i class="fa-solid fa-circle-info"></i>
-							</button>
-						</div>
-						<% }); %>
-					<% } %>
+					</div>
+					<div class="header-actions">
+						<button class="btn-icons" title="Start Call">
+							<i class="fa-solid fa-phone"></i>
+						</button>
+						<button class="btn-icons" title="Video Call">
+							<i class="fa-solid fa-video"></i>
+						</button>
+						<button class="btn-icons" id="toggle-info" title="Toggle Info">
+							<i class="fa-solid fa-circle-info"></i>
+						</button>
+					</div>
 				</header>
 
 				<section class="message-feed" id="message-feed">
-					<% if (typeof usersList !== 'undefined' && usersList.length > 0) { %>
-						<% usersList.forEach((user, index) => { %>
-						<div class="message-group incoming <%= index === 0 ? 'active' : ''  %>" data-user-id="<%= user.id %>" data-username="<%= user.username %>">
+					<% if (activeUser) { %>
+						<div class="message-group incoming">
 							<img
 								src="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?q=80&w=200&auto=format&fit=crop"
-								alt="<%= user.username %>'s Avatar"
+								alt="Avatar"
 								class="avatar-small" />
 							<div class="bubble-wrapper">
 								<div class="bubble">
-									Hey! Did you review the latest Math assignment?
+									Welcome! Start your conversation with <%= activeUser.username %>.
 								</div>
-								<span class="timestamp">10:40 AM</span>
+								<span class="timestamp">Just now</span>
 							</div>
 						</div>
-
-						<div class="message-group outgoing">
-							<div class="bubble-wrapper">
-								<div class="bubble">
-									Yes, I just finished step 3! Sending over the details now.
-								</div>
-								<span class="timestamp">10:42 AM</span>
-							</div>
+					<% } else { %>
+						<div style="text-align: center; margin-top: 40px; color: #888;">
+							<i class="fa-solid fa-comments" style="font-size: 3rem; margin-bottom: 10px;"></i>
+							<p>Follow an account from the left sidebar to add them to your contacts and chat!</p>
 						</div>
-						<% }); %>
 					<% } %>
 				</section>
 
@@ -124,49 +148,68 @@
 							id="message-input"
 							placeholder="Type a message..."
 							autocomplete="off"
+							<%= !activeUser ? '' : '' %>
 							required />
 						<button type="button" class="btn-icons" title="Emoji">
 							<i class="fa-regular fa-face-smile"></i>
 						</button>
-						<button type="submit" class="btn-send" title="Send">
+						<button type="submit" class="btn-send" title="Send" <%= !activeUser ? '' : '' %>>
 							<i class="fa-solid fa-paper-plane"></i>
 						</button>
 					</form>
 				</footer>
 			</main>
 
+			<!-- Right Sidebar: Active Profile Info -->
 			<aside class="sidebar-right" id="sidebar-right">
-				<% if (typeof usersList !== 'undefined' && usersList.length > 0) { %>
-					<% usersList.forEach((user, index) => { %>
-					<div class="info-profile <%= index === 0 ? 'active' : ''  %>" data-user-id="<%= user.id %>" data-username="<%= user.username %>">
-						<img
-							src="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?q=80&w=200&auto=format&fit=crop"
-								alt="<%= user.username %>'s Avatar"
-							class="avatar-large" />
-						<h3 class="name"><%= user.username %></h3>
-						<p>Student · Grade 10</p>
-					</div>
+				<div class="info-profile" id="active-profile-card">
+					<img
+						src="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?q=80&w=200&auto=format&fit=crop"
+						alt="Avatar"
+						class="avatar-large" />
+					<h3 class="name" id="profile-card-name"><%= activeUser ? activeUser.username : 'No Selection' %></h3>
+					<p id="profile-card-email"><%= activeUser ? activeUser.email : '' %></p>
+				</div>
 
-					<div class="shared-section">
-						<h4>Shared Files</h4>
-						<ul class="file-list">
-							<li>
-								<i class="fa-solid fa-file-pdf"></i>
-								<span>algebra_notes.pdf</span>
-							</li>
-							<li>
-								<i class="fa-solid fa-file-image"></i> <span>diagram_v1.png</span>
-							</li>
-						</ul>
-					</div>
-					<% }); %>
-				<% } %>
+				<div class="shared-section">
+					<h4>Shared Files</h4>
+					<ul class="file-list">
+						<li>
+							<i class="fa-solid fa-file-pdf"></i>
+							<span>algebra_notes.pdf</span>
+						</li>
+						<li>
+							<i class="fa-solid fa-file-image"></i> <span>diagram_v1.png</span>
+						</li>
+					</ul>
+				</div>
 			</aside>
 		</div>
 
 		<script>
 			window.currentUser = <%- JSON.stringify(typeof user !== 'undefined' && user ? (user.username || user.email) : 'Client') %>;
 			window.currentUserId = <%- JSON.stringify(typeof user !== 'undefined' && user ? user.id : 'client_guest') %>;
+
+			// Client-side Follow Action Handler
+			async function followUser(targetUserId) {
+				try {
+					const response = await fetch('/api/follow', {
+						method: 'POST',
+						headers: { 'Content-Type': 'application/json' },
+						body: JSON.stringify({ followeeId: targetUserId })
+					});
+
+					const result = await response.json();
+					if (response.ok && result.success) {
+						// Reload page to refresh contacts and discover lists
+						window.location.reload();
+					} else {
+						alert(result.error || 'Failed to follow user.');
+					}
+				} catch (err) {
+					console.error('Error following user:', err);
+				}
+			}
 		</script>
 
 		<script src="/socket.io/socket.io.js"></script>

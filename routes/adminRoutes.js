@@ -64,6 +64,66 @@ router.get("/users", adminAuth, (req, res) => {
 	}
 });
 
+// GET /admin/history - Display history of users
+router.get("/history", adminAuth, (req, res) => {
+	try {
+		const stmt = db.prepare("SELECT id, username, email, role, created_at FROM users ORDER BY username ASC");
+        const usersList = stmt.all();
+
+        return res.render("admin/history", {
+            title: "History",
+            activePage: "history",
+        });
+	} catch (error) {
+		console.error("Error fetching users:", error);
+		res.status(500).render("admin/history", {
+			title: "History Lists",
+			usersList: [],
+			error: "Failed to load users history."
+		});
+	}
+});
+
+// GET /admin/analytics - Display the analysis
+router.get("/analytics", adminAuth, (req, res) => {
+	try {
+		const stmt = db.prepare("SELECT id, username, email, role, created_at FROM users ORDER BY username ASC");
+        const usersList = stmt.all();
+
+        return res.render("admin/analytics", {
+            title: "Analysis",
+            activePage: "analytics",
+        });
+	} catch (error) {
+		console.error("Error fetching users:", error);
+		res.status(500).render("admin/analytics", {
+			title: "Analysis",
+			usersList: [],
+			error: "Failed to load analytics."
+		});
+	}
+});
+
+// GET /admin/settings - Display the admin settings
+router.get("/settings", adminAuth, (req, res) => {
+	try {
+		const stmt = db.prepare("SELECT id, username, email, role, created_at FROM users ORDER BY username ASC");
+        const usersList = stmt.all();
+
+        return res.render("admin/settings", {
+            title: "Settings",
+            activePage: "settings",
+        });
+	} catch (error) {
+		console.error("Error fetching users:", error);
+		res.status(500).render("admin/settings", {
+			title: "Settings",
+			usersList: [],
+			error: "Failed to load admin settings."
+		});
+	}
+});
+
 // GET /admin/posts/create
 router.get("/posts/create", adminAuth, (req, res) => {
 	res.render("admin/create-post", {

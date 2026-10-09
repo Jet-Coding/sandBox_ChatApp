@@ -1,7 +1,9 @@
 <aside class="sidebar">
 	<div class="sidebar-header">
-		<img src="" alt="" />
-		<h3>Sand<span class="logo">Box</span></h3>
+		<div class="logo">
+			<img src="/images/Logo.svg" alt="logo" />
+			<h3>Sand<span class="logo-txt">Box</span></h3>
+		</div>
 	</div>
 	<p>
 		Logged in:
@@ -39,12 +41,12 @@
 			<h5>Analytics</h5>
 		</a>
 
-		<a
+		<!--	<a
 			href="/admin/newLogin"
 			class="nav-link <%= typeof activePage !== 'undefined' && activePage === 'newLogin' ? 'active' : '' %>">
 			<span class="material-icons-sharp"> add </span>
 			<h5>New Login</h5>
-		</a>
+		</a>	-->
 
 		<a
 			href="/admin/settings"
@@ -53,7 +55,8 @@
 			<h5>Settings</h5>
 		</a>
 
-		<form action="/auth/logout" method="POST" style="margin-top: 20px">
+		<form action="/auth/logout-admin" method="POST" style="margin-top: 20px">
+			<div class="nav-divider"></div>
 			<button type="submit" class="btn-logout">
 				<span class="material-icons-sharp"> logout </span>
 				<h5>Logout</h5>

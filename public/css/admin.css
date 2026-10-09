@@ -118,6 +118,9 @@ body {
 	border-bottom: 1px solid #334155;
 	user-select: none;
 }
+.nav-divider {
+	border-bottom: 1px solid #334155;
+}
 /* FULL COLLAPSED STATE STYLES */
 /* Shrink sidebar width */
 .sidebar.collapsed {
@@ -169,6 +172,14 @@ body {
 	margin-bottom: 0.25rem;
 }
 .logo {
+	display: flex;
+    gap: 0.5rem;
+}
+.logo img {
+	width: 2rem;
+    height: 2rem;
+}
+.logo-txt {
 	color: var(--primary-color,);
 }
 .sidebar p {
@@ -312,7 +323,7 @@ body {
 /* Responsive Metric Stat Cards Grid */
 .dashboard-top-section {
 	display: grid;
-	grid-template-columns: 1fr 340px; /* Stats grid takes remaining space, chart takes 340px */
+	grid-template-columns: 1fr 1fr 1fr; /* Stats grid takes remaining space, chart takes 340px */
 	gap: 1rem;
 	align-items: stretch;
 	width: 100%;

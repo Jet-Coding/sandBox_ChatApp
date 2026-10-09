@@ -8,20 +8,23 @@ const JWT_SECRET = process.env.JWT_SECRET || "fallback-secret-key";
 
 // GET ROUTES (Render Views)
 router.get("/login", (req, res) => {
-	if (req.cookies?.token) {
+	if (req.cookies?.client_token) {
         return res.redirect("/"); 
 	}
     res.render("client/login", { title: "Login", error: null });
 });
 
 router.get("/register", (req, res) => {
-	if (req.cookies?.token) {
+	if (req.cookies?.client_token) {
         return res.redirect("/"); 
 	}
     res.render("client/register", { title: "Register", error: null });
 });
 
 router.get("/login-admin", (req, res) => {
+	if (req.cookies?.admin_token) {
+		return res.redirect("/admin/dashboard")
+	}
 	res.render("admin/login-admin", { title: "Admin Login", error: null });
 });
 
@@ -60,18 +63,11 @@ router.post("/login", async (req, res) => {
 			})
 		}
 
-        const token = jwt.sign(
-            { 
-				id: user.id, 
-				username: user.username, 
-				email: user.email, 
-				role: user.role 
-			},
-            process.env.JWT_SECRET || "fallback-secret",
-            { expiresIn: process.env.JWT_EXPIRES_IN || "1d" }
+        const token = jwt.sign({ id: user.id, username: user.username, email: user.email, role: user.role },
+            process.env.JWT_SECRET || "fallback-secret", { expiresIn: process.env.JWT_EXPIRES_IN || "1d" }
         );
 
-        res.cookie("token", token, {
+        res.cookie("client_token", token, {
             httpOnly: true,
             secure: process.env.NODE_ENV === "production",
             sameSite: "strict",
@@ -121,19 +117,12 @@ router.post("/register", async (req, res) => {
 		const result = insertStmt.run(username, email, hashedPassword);
 
 		// Generate JWT token using the newly inserted row ID
-		const token = jwt.sign(
-			{
-				id: result.lastInsertRowid,
-				username: username,
-				email: email,
-				role: "user"
-			},
-			process.env.JWT_SECRET || "fallback-secret-key",
-			{ expiresIn: "1d" }
+		const token = jwt.sign({ id: result.lastInsertRowid, username: username, email: email, role: "user"},
+			process.env.JWT_SECRET || "fallback-secret-key", { expiresIn: "1d" }
 		);
 
 		// Set HTTP-only Cookie
-		res.cookie("token", token, {
+		res.cookie("client_token", token, {
 			httpOnly: true,
 			secure: process.env.NODE_ENV === "production",
 			maxAge: 24 * 60 * 60 * 1000 // 24 hours
@@ -195,7 +184,7 @@ router.post("/login-admin", async (req, res) => {
 			{ expiresIn: process.env.JWT_EXPIRES_IN || "1d" },
 		);
 
-		res.cookie("token", token, {
+		res.cookie("admin_token", token, {
 			httpOnly: true,
 			secure: process.env.NODE_ENV === "production",
 			sameSite: "strict",
@@ -213,10 +202,16 @@ router.post("/login-admin", async (req, res) => {
 	}
 });
 
-// POST /auth/logout - Clear authentication cookie
+// POST /auth/logout - Clear authentication cookie for client
 router.post("/logout", (req, res) => {
-    res.clearCookie("token");
+    res.clearCookie("client_token");
     return res.redirect("/auth/login");
+});
+
+// POST /auth/logout-admin - Clear authentication cookie for admin
+router.post("/logout-admin", (req, res) => {
+    res.clearCookie("admin_token");
+    return res.redirect("/auth/login-admin");
 });
 
 // authRoutes.js

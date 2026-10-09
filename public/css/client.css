@@ -94,16 +94,7 @@ body.auth-page {
 	max-width: 420px;
 	border: 1px solid #334155;
 }
-
 /* Scoped Form Elements */
-.login-page fieldset,
-.register-page fieldset {
-	border: none;
-	padding: 0;
-	margin: 0;
-	display: flex;
-	flex-direction: column;
-}
 .login-page h3, .register-page h3 {
 	color: #ffffff;
 	font-size: 1.25rem;
@@ -114,79 +105,74 @@ body.auth-page {
 .logo {
 	color: var(--accent-blue,);
 }
-
-.login-page legend,
-.register-page legend {
+.login-page h2, .register-page h2 {
 	font-size: 1.75rem;
 	font-weight: 600;
 	margin-bottom: 1.5rem;
 	text-align: center;
 	color: #ffffff;
 }
-
-.login-page label,
-.register-page label {
+/* Error Alert */
+.alert-danger {
+	background-color: #451a03;
+	border: 1px solid #78350f;
+	color: #fcd34d;
+	padding: 0.75rem 1rem;
+	border-radius: 6px;
+	font-size: 0.875rem;
+	margin-bottom: 1.25rem;
+	text-align: center;
+}
+/* Form Groups & Inputs */
+.form-group {
+	margin-bottom: 1.25rem;
+	display: flex;
+	flex-direction: column;
+}
+.form-group label {
 	font-size: 0.875rem;
 	font-weight: 500;
 	margin-bottom: 0.5rem;
 	color: #94a3b8;
 }
-
-.login-page input[type="text"],
-.login-page input[type="email"],
-.login-page input[type="password"],
-.register-page input[type="text"],
-.register-page input[type="email"],
-.register-page input[type="password"] {
+.form-group input {
 	width: 100%;
-	height: 44px;
-	padding: 0 0.85rem;
-	margin-bottom: 1.25rem;
-	background-color: #ffffff;
-	border: 1px solid #cbd5e1;
-	border-radius: 8px;
-	font-size: 0.95rem;
-	color: var(--text-dark);
+	padding: 0.75rem 1rem;
+	background-color: #0f172a;
+	border: 1px solid #334155;
+	border-radius: 6px;
+	color: #ffffff;
+	font-size: 1rem;
+	transition:
+		border-color 0.2s ease,
+		box-shadow 0.2s ease;
+}
+.form-group input:focus {
 	outline: none;
-	transition: border-color 0.2s ease, box-shadow 0.2s ease;
+	border-color: #6366f1;
+	box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.2);
 }
-
-.login-page input:focus,
-.register-page input:focus {
-	border-color: var(--accent-yellow);
-	box-shadow: 0 0 0 3px rgba(255, 192, 45, 0.25);
-}
-
-/* Scoped Submit Buttons */
-.login-page button[type="submit"],
-.register-page button[type="submit"],
-.login-page .btn-submit,
-.register-page .btn-submit {
+/* Submit Button */
+.btn-submit {
 	width: 100%;
-	height: 44px;
-	background-color: var(--accent-yellow);
-	color: var(--text-dark);
+	padding: 0.75rem;
+	background-color: #6366f1;
+	color: #ffffff;
 	border: none;
-	border-radius: 8px;
-	font-size: 0.95rem;
-	font-weight: 700;
+	border-radius: 6px;
+	font-size: 1rem;
+	font-weight: 600;
 	cursor: pointer;
-	margin-top: 0.25rem;
-	transition: background-color 0.2s ease, transform 0.1s ease;
+	margin-top: 0.5rem;
+	transition: background-color 0.2s ease;
 }
-
-.login-page button[type="submit"]:hover,
-.register-page button[type="submit"]:hover,
-.login-page .btn-submit:hover,
-.register-page .btn-submit:hover {
-	background-color: var(--accent-yellow-hover);
+.btn-submit:hover {
+	background-color: #4f46e5;
 }
-
 .login-page button[type="submit"]:active,
 .register-page button[type="submit"]:active {
 	transform: scale(0.99);
 }
-
 /* Form Helper & Alert Notices */
 .notice,
 .alert-danger {
